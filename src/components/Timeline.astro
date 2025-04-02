@@ -1,0 +1,547 @@
+---
+import { milestones } from "../data/milestones";
+---
+
+<header class="intro">
+  <div class="content">
+    <div class="header-icons">
+      <img src="/src/assets/netlify.svg" alt="Netlify" />
+    </div>
+    <h1>A Decade of Innovation</h1>
+    <p>Celebrate Netlify's 10 years of transforming web development</p>
+    <div class="scroll-indicator">
+      <span>Scroll to see milestones</span>
+      <div class="arrow"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="milestones-container">
+    <div class="dot-navigation">
+      {milestones.map((_, index) => <div class="dot" data-index={index} />)}
+    </div>
+    {
+      milestones.map((milestone, index) => (
+        <section class="milestone">
+          <div class="content">
+            <div class="year">{milestone.year}</div>
+            <h2>{milestone.title}</h2>
+            <p>{milestone.description}</p>
+            {milestone.source && (
+              <a
+                href={milestone.source}
+                class="source-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Read announcement →
+              </a>
+            )}
+            {index === milestones.length - 1 && (
+              <div class="social-footer">
+                <h3>Wish Netlify a Happy Birthday! 🎉</h3>
+                <div class="social-buttons">
+                  <a
+                    href={`https://twitter.com/intent/tweet?text=Happy%2010th%20Birthday%20%40Netlify!%20Here's%20to%20a%20decade%20of%20transforming%20web%20development.%20%23NetlifyTurns10`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="social-button"
+                  >
+                    <svg
+                      role="img"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <title>X</title>
+                      <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+                    </svg>
+                    Share on X
+                  </a>
+                  <a
+                    href={`https://bsky.app/intent/compose?text=Happy%2010th%20Birthday%20@netlify.com!%20Here's%20to%20a%20decade%20of%20transforming%20web%20development.%20%23NetlifyTurns10`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="social-button"
+                  >
+                    <svg
+                      role="img"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <title>Bluesky</title>
+                      <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z" />
+                    </svg>
+                    Share on Bluesky
+                  </a>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+</main>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+  import confetti from "canvas-confetti";
+
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+  // Initialize scroll functionality
+  const scrollIndicator = document.querySelector(".scroll-indicator");
+  const milestones = document.querySelectorAll(".milestone");
+  const lastSection = milestones[milestones.length - 1];
+
+  if (scrollIndicator && milestones.length > 0) {
+    scrollIndicator.addEventListener("click", () => {
+      // Show dot navigation
+      dotNavigation?.classList.add("visible");
+
+      // Update active dot to first milestone
+      updateActiveDot(0);
+
+      // Scroll to first section using native scrollIntoView
+      milestones[0].scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+
+      // Manually trigger fade in animation for first section
+      const firstContent = milestones[0].querySelector(".content");
+      if (firstContent) {
+        // Reset initial state
+        gsap.set(firstContent, { y: 100, opacity: 0 });
+
+        // Animate in after a short delay to ensure scroll has started
+        setTimeout(() => {
+          gsap.to(firstContent, {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+          });
+        }, 100);
+      }
+    });
+  }
+
+  // Celebration function
+  function celebrate() {
+    const count = 200;
+    const defaults = {
+      origin: { y: 0.7 },
+    };
+
+    function fire(particleRatio: number, opts: any) {
+      confetti(
+        Object.assign({}, defaults, opts, {
+          particleCount: Math.floor(count * particleRatio),
+        })
+      );
+    }
+
+    fire(0.25, {
+      spread: 26,
+      startVelocity: 55,
+    });
+
+    fire(0.2, {
+      spread: 60,
+    });
+
+    fire(0.35, {
+      spread: 100,
+      decay: 0.91,
+      scalar: 0.8,
+    });
+
+    fire(0.1, {
+      spread: 120,
+      startVelocity: 25,
+      decay: 0.92,
+      scalar: 1.2,
+    });
+
+    fire(0.1, {
+      spread: 120,
+      startVelocity: 45,
+    });
+  }
+
+  // Initialize dot indicators
+  const dots = document.querySelectorAll(".dot");
+  const dotNavigation = document.querySelector(".dot-navigation");
+  const header = document.querySelector(".intro");
+
+  // Create ScrollTrigger for header to show/hide dots
+  ScrollTrigger.create({
+    trigger: header,
+    start: "bottom center",
+    end: "bottom center",
+    scrub: true,
+    onEnter: () => dotNavigation?.classList.add("visible"),
+    onLeaveBack: () => dotNavigation?.classList.remove("visible"),
+  });
+
+  const updateActiveDot = (index: number) => {
+    dots.forEach((dot, i) => {
+      dot.classList.toggle("active", i === index);
+    });
+  };
+
+  // Snap section into place when scrolling close
+  milestones.forEach((section, index) => {
+    ScrollTrigger.create({
+      trigger: section,
+      start: "center center",
+      end: "center center",
+      scrub: true,
+      onEnter: () => {
+        gsap.to(window, {
+          scrollTo: section,
+          duration: 0.5,
+          ease: "power2.out",
+        });
+
+        updateActiveDot(index);
+
+        // Trigger celebration when entering the last section
+        if (section === lastSection) {
+          celebrate();
+        }
+      },
+      onEnterBack: () => {
+        gsap.to(window, {
+          scrollTo: section,
+          duration: 0.5,
+          ease: "power2.out",
+        });
+        updateActiveDot(index);
+      },
+    });
+  });
+
+  // Remove parallax effect
+  milestones.forEach((section) => {
+    const content = section.querySelector(".content");
+
+    gsap.from(content, {
+      y: 100,
+      opacity: 0,
+      duration: 1,
+      scrollTrigger: {
+        trigger: section,
+        start: "top center",
+        end: "top 20%",
+        toggleActions: "play none none reverse",
+      },
+    });
+  });
+</script>
+
+<style>
+  :root {
+    --netlify-teal: oklch(0.7 0.15 180);
+    --netlify-dark: oklch(0.3 0.05 240);
+  }
+
+  html,
+  body {
+    overflow-y: auto; /* Enable scrolling */
+    height: 100%; /* Ensure full height */
+  }
+
+  body {
+    background: radial-gradient(
+        circle at bottom center,
+        #001d3d 0%,
+        /* Deep blue for the night sky */ #000814 100%
+          /* Darker blue at the edges */
+      )
+      fixed; /* Make the background fixed */
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+
+  .intro {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .intro .content {
+    padding: 2rem;
+    max-width: 800px;
+  }
+
+  .header-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .header-icons img {
+    width: 340px; /* Increase width */
+    height: 200px; /* Increase height */
+  }
+
+  h1 {
+    font-size: 4rem;
+    color: #ffffff; /* White text for contrast */
+    margin: 0;
+    background: linear-gradient(90deg, #00ad9f 0%, #00c7b7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .intro p {
+    font-size: 1.5rem;
+    color: #ffffff; /* White text for contrast */
+    margin-top: 1rem;
+    opacity: 0.8;
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: #ffffff; /* White text for contrast */
+    opacity: 0.6;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+  }
+
+  .scroll-indicator:hover {
+    opacity: 1;
+  }
+
+  .arrow {
+    width: 20px;
+    height: 20px;
+    border-right: 2px solid #ffffff; /* White arrow for contrast */
+    border-bottom: 2px solid #ffffff;
+    transform: rotate(45deg);
+    margin: 1rem auto;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+      transform: translateY(0) rotate(45deg);
+    }
+    40% {
+      transform: translateY(-10px) rotate(45deg);
+    }
+    60% {
+      transform: translateY(-5px) rotate(45deg);
+    }
+  }
+
+  main {
+    height: auto; /* Allow content to grow */
+    overflow: hidden; /* Prevent default scrolling */
+    position: relative;
+    scroll-snap-type: y mandatory; /* Enable vertical snapping */
+  }
+
+  .milestones-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .milestone {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .milestone .content {
+    padding: 3rem;
+    border-radius: 1rem;
+    backdrop-filter: blur(10px);
+    margin: 0 2rem;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .social-footer {
+    margin-top: 8rem;
+    text-align: center;
+  }
+
+  .social-footer h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #ffffff;
+  }
+
+  .social-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .social-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 50px;
+    background: linear-gradient(90deg, #00ad9f 0%, #00c7b7 100%);
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
+  }
+
+  .social-button:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #f6f6f6;
+    border-radius: 4px;
+    color: #000814;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .source-link:hover {
+    background-color: #eef1fe;
+    color: #1a3fc7;
+  }
+
+  .social-button svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+
+  .dot-navigation {
+    position: fixed;
+    left: 50%;
+    bottom: 2rem;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
+  }
+
+  .dot-navigation.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 2px solid white;
+    background: white;
+    padding: 0;
+    transition: all 0.3s ease;
+    opacity: 0.5;
+  }
+
+  .dot:hover {
+    opacity: 0.8;
+  }
+
+  .dot.active {
+    background: white;
+    opacity: 1;
+  }
+
+  .year {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    color: var(--netlify-teal);
+    font-family: "Inter", system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-size: 3rem;
+    line-height: 1.2;
+    color: #ffffff;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: #ffffff;
+    opacity: 0.9;
+    font-weight: 400;
+    max-width: 65ch;
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2.5rem;
+    }
+
+    .milestone .content {
+      padding: 2rem;
+      margin: 0 1.5rem;
+    }
+
+    .year {
+      font-size: 2.5rem;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+    }
+
+    p {
+      font-size: 1.125rem;
+      line-height: 1.7;
+    }
+  }
+</style>
