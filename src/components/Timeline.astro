@@ -1,11 +1,13 @@
 ---
 import { milestones } from "../data/milestones";
+import logo from "../assets/netlify.svg";
+import { Image } from "astro:assets";
 ---
 
 <header class="intro">
   <div class="content">
     <div class="header-icons">
-      <img src="/src/assets/netlify.svg" alt="Netlify" />
+      <Image src={logo} alt="Netlify" />
     </div>
     <h1>A Decade of Innovation</h1>
     <p>Celebrate Netlify's 10 years of transforming web development</p>
