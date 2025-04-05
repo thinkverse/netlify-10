@@ -3,7 +3,7 @@ export const milestones = [
     year: 2015,
     title: "Official Launch",
     description:
-      "Netlify officially launches on April 6th, becoming the first platform to champion static sites and continuous deployment, laying the groundwork for what would become the Jamstack movement.",
+      "Netlify officially launches on April 7th, becoming the first platform to champion static sites and continuous deployment, laying the groundwork for what would become the Jamstack movement.",
     source: "https://www.netlify.com/blog/2015/04/07/netlify-news-no.-2/",
   },
   {
